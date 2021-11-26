@@ -1,312 +1,217 @@
--- phpMyAdmin SQL Dump
--- version 5.1.0
--- https://www.phpmyadmin.net/
+-- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 20-11-2021 a las 16:17:15
--- Versión del servidor: 8.0.26
--- Versión de PHP: 8.0.6
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
+-- Host: 127.0.0.1    Database: fasfu
+-- ------------------------------------------------------
+-- Server version	8.0.26
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Base de datos: `fasfu`
+-- Table structure for table `compras`
 --
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `compras`
---
-
+DROP TABLE IF EXISTS `compras`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `compras` (
-  `id_compra` int NOT NULL,
+  `id_compra` int NOT NULL AUTO_INCREMENT,
   `id_usuario` int NOT NULL,
   `fecha` datetime DEFAULT NULL,
-  `total` float DEFAULT NULL
+  `total` float DEFAULT NULL,
+  PRIMARY KEY (`id_compra`,`id_usuario`),
+  KEY `id_usuario` (`id_usuario`),
+  CONSTRAINT `compras_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Estructura de tabla para la tabla `compras_platillos`
+-- Dumping data for table `compras`
 --
 
+LOCK TABLES `compras` WRITE;
+/*!40000 ALTER TABLE `compras` DISABLE KEYS */;
+/*!40000 ALTER TABLE `compras` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `compras_platillos`
+--
+
+DROP TABLE IF EXISTS `compras_platillos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `compras_platillos` (
   `id_compra` int NOT NULL,
   `id_platillo` int NOT NULL,
-  `cantidad` int DEFAULT NULL
+  `cantidad_platillos` int DEFAULT NULL,
+  PRIMARY KEY (`id_compra`,`id_platillo`),
+  KEY `id_platillo` (`id_platillo`),
+  CONSTRAINT `compras_platillos_ibfk_1` FOREIGN KEY (`id_compra`) REFERENCES `compras` (`id_compra`) ON DELETE CASCADE,
+  CONSTRAINT `compras_platillos_ibfk_2` FOREIGN KEY (`id_platillo`) REFERENCES `platillos_bebidas` (`id_platillo`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Estructura de tabla para la tabla `gustos`
+-- Dumping data for table `compras_platillos`
 --
 
+LOCK TABLES `compras_platillos` WRITE;
+/*!40000 ALTER TABLE `compras_platillos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `compras_platillos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `gustos`
+--
+
+DROP TABLE IF EXISTS `gustos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `gustos` (
   `id_usuario` int NOT NULL,
-  `nombre_tipo` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+  `tipo` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id_usuario`),
+  CONSTRAINT `gustos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Estructura de tabla para la tabla `opiniones`
+-- Dumping data for table `gustos`
 --
 
+LOCK TABLES `gustos` WRITE;
+/*!40000 ALTER TABLE `gustos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `gustos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `opiniones`
+--
+
+DROP TABLE IF EXISTS `opiniones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `opiniones` (
-  `id_opinion` int NOT NULL,
   `id_platillo` int NOT NULL,
   `id_usuario` int NOT NULL,
   `comentario` text,
-  `calificacion` int DEFAULT NULL
+  `calificacion` int DEFAULT NULL,
+  PRIMARY KEY (`id_platillo`,`id_usuario`),
+  KEY `id_usuario` (`id_usuario`),
+  CONSTRAINT `opiniones_ibfk_1` FOREIGN KEY (`id_platillo`) REFERENCES `platillos_bebidas` (`id_platillo`) ON DELETE CASCADE,
+  CONSTRAINT `opiniones_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Estructura de tabla para la tabla `platillos_bebidas`
+-- Dumping data for table `opiniones`
 --
 
+LOCK TABLES `opiniones` WRITE;
+/*!40000 ALTER TABLE `opiniones` DISABLE KEYS */;
+/*!40000 ALTER TABLE `opiniones` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `platillos_bebidas`
+--
+
+DROP TABLE IF EXISTS `platillos_bebidas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `platillos_bebidas` (
-  `id_platillo` int NOT NULL,
+  `id_platillo` int NOT NULL AUTO_INCREMENT,
   `id_restaurante` int NOT NULL,
-  `nombre_subtipo` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `nombre` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `subtipo` varchar(20) DEFAULT NULL,
+  `nombre` varchar(20) DEFAULT NULL,
   `descripcion` text,
-  `imagen` longblob
+  `imagen` longblob NOT NULL,
+  PRIMARY KEY (`id_platillo`,`id_restaurante`),
+  KEY `id_restaurante` (`id_restaurante`),
+  CONSTRAINT `platillos_bebidas_ibfk_1` FOREIGN KEY (`id_restaurante`) REFERENCES `restaurante` (`id_restaurante`),
+  CONSTRAINT `platillos_bebidas_ibfk_2` FOREIGN KEY (`id_restaurante`) REFERENCES `restaurante` (`id_restaurante`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Estructura de tabla para la tabla `restaurante`
+-- Dumping data for table `platillos_bebidas`
 --
 
+LOCK TABLES `platillos_bebidas` WRITE;
+/*!40000 ALTER TABLE `platillos_bebidas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `platillos_bebidas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `restaurante`
+--
+
+DROP TABLE IF EXISTS `restaurante`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `restaurante` (
-  `id_restaurante` int NOT NULL,
+  `id_restaurante` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(30) DEFAULT NULL,
-  `nombre_tipo` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `imagen` longblob NOT NULL
+  `tipo` varchar(20) DEFAULT NULL,
+  `imagen` longblob NOT NULL,
+  PRIMARY KEY (`id_restaurante`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `subtipo`
---
-
-CREATE TABLE `subtipo` (
-  `nombre_subtipo` varchar(20) NOT NULL,
-  `imagen` longblob
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Volcado de datos para la tabla `subtipo`
+-- Dumping data for table `restaurante`
 --
 
-INSERT INTO `subtipo` (`nombre_subtipo`, `imagen`) VALUES
-('Bebidas', NULL),
-('Platillos', NULL),
-('Postres', NULL),
-('Snacks', NULL);
-
--- --------------------------------------------------------
+LOCK TABLES `restaurante` WRITE;
+/*!40000 ALTER TABLE `restaurante` DISABLE KEYS */;
+/*!40000 ALTER TABLE `restaurante` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Estructura de tabla para la tabla `tipo`
+-- Table structure for table `usuario`
 --
 
-CREATE TABLE `tipo` (
-  `nombre_tipo` varchar(20) NOT NULL,
-  `imagen` longblob
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Volcado de datos para la tabla `tipo`
---
-
-INSERT INTO `tipo` (`nombre_tipo`, `imagen`) VALUES
-('China', NULL),
-('Coreana', NULL),
-('Española', NULL),
-('Francesa', NULL),
-('Indú', NULL),
-('Italiana', NULL),
-('Japonesa', NULL),
-('Mexicana', NULL);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuario`
---
-
+DROP TABLE IF EXISTS `usuario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuario` (
-  `id_usuario` int NOT NULL,
+  `id_usuario` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(30) DEFAULT NULL,
   `apellidos` varchar(60) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `email` varchar(40) DEFAULT NULL,
   `telefono` int DEFAULT NULL,
   `calle` varchar(30) DEFAULT NULL,
-  `colonia` varchar(30) DEFAULT NULL
+  `colonia` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Índices para tablas volcadas
+-- Dumping data for table `usuario`
 --
 
---
--- Indices de la tabla `compras`
---
-ALTER TABLE `compras`
-  ADD PRIMARY KEY (`id_compra`,`id_usuario`),
-  ADD KEY `id_usuario` (`id_usuario`);
+LOCK TABLES `usuario` WRITE;
+/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
---
--- Indices de la tabla `compras_platillos`
---
-ALTER TABLE `compras_platillos`
-  ADD KEY `id_platillo` (`id_platillo`),
-  ADD KEY `id_compra` (`id_compra`);
-
---
--- Indices de la tabla `gustos`
---
-ALTER TABLE `gustos`
-  ADD KEY `id_usuario` (`id_usuario`),
-  ADD KEY `nombre_tipo` (`nombre_tipo`);
-
---
--- Indices de la tabla `opiniones`
---
-ALTER TABLE `opiniones`
-  ADD PRIMARY KEY (`id_opinion`),
-  ADD KEY `id_usuario` (`id_usuario`),
-  ADD KEY `id_platillo` (`id_platillo`);
-
---
--- Indices de la tabla `platillos_bebidas`
---
-ALTER TABLE `platillos_bebidas`
-  ADD PRIMARY KEY (`id_platillo`) USING BTREE,
-  ADD KEY `id_restaurante` (`id_restaurante`),
-  ADD KEY `nombre_subtipo` (`nombre_subtipo`);
-
---
--- Indices de la tabla `restaurante`
---
-ALTER TABLE `restaurante`
-  ADD PRIMARY KEY (`id_restaurante`),
-  ADD KEY `nombre_tipo` (`nombre_tipo`);
-
---
--- Indices de la tabla `subtipo`
---
-ALTER TABLE `subtipo`
-  ADD PRIMARY KEY (`nombre_subtipo`);
-
---
--- Indices de la tabla `tipo`
---
-ALTER TABLE `tipo`
-  ADD PRIMARY KEY (`nombre_tipo`);
-
---
--- Indices de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id_usuario`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `compras`
---
-ALTER TABLE `compras`
-  MODIFY `id_compra` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `opiniones`
---
-ALTER TABLE `opiniones`
-  MODIFY `id_opinion` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `platillos_bebidas`
---
-ALTER TABLE `platillos_bebidas`
-  MODIFY `id_platillo` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `restaurante`
---
-ALTER TABLE `restaurante`
-  MODIFY `id_restaurante` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  MODIFY `id_usuario` int NOT NULL AUTO_INCREMENT;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `compras`
---
-ALTER TABLE `compras`
-  ADD CONSTRAINT `compras_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `compras_platillos`
---
-ALTER TABLE `compras_platillos`
-  ADD CONSTRAINT `compras_platillos_ibfk_1` FOREIGN KEY (`id_compra`) REFERENCES `compras` (`id_compra`) ON DELETE CASCADE,
-  ADD CONSTRAINT `compras_platillos_ibfk_2` FOREIGN KEY (`id_platillo`) REFERENCES `platillos_bebidas` (`id_platillo`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `gustos`
---
-ALTER TABLE `gustos`
-  ADD CONSTRAINT `gustos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE,
-  ADD CONSTRAINT `gustos_ibfk_2` FOREIGN KEY (`nombre_tipo`) REFERENCES `tipo` (`nombre_tipo`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `opiniones`
---
-ALTER TABLE `opiniones`
-  ADD CONSTRAINT `opiniones_ibfk_1` FOREIGN KEY (`id_platillo`) REFERENCES `platillos_bebidas` (`id_platillo`) ON DELETE CASCADE,
-  ADD CONSTRAINT `opiniones_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `platillos_bebidas`
---
-ALTER TABLE `platillos_bebidas`
-  ADD CONSTRAINT `platillos_bebidas_ibfk_2` FOREIGN KEY (`id_restaurante`) REFERENCES `restaurante` (`id_restaurante`) ON DELETE CASCADE,
-  ADD CONSTRAINT `platillos_bebidas_ibfk_3` FOREIGN KEY (`nombre_subtipo`) REFERENCES `subtipo` (`nombre_subtipo`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `restaurante`
---
-ALTER TABLE `restaurante`
-  ADD CONSTRAINT `restaurante_ibfk_1` FOREIGN KEY (`nombre_tipo`) REFERENCES `tipo` (`nombre_tipo`) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
-
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2021-11-18 19:51:42
