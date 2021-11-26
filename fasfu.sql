@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-11-2021 a las 16:17:15
+-- Tiempo de generación: 27-11-2021 a las 00:40:00
 -- Versión del servidor: 8.0.26
 -- Versión de PHP: 8.0.6
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `compras` (
   `id_compra` int NOT NULL,
-  `id_usuario` int NOT NULL,
+  `id_usuario` varchar(20) NOT NULL,
   `fecha` datetime DEFAULT NULL,
   `total` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -53,7 +53,7 @@ CREATE TABLE `compras_platillos` (
 --
 
 CREATE TABLE `gustos` (
-  `id_usuario` int NOT NULL,
+  `id_usuario` varchar(20) NOT NULL,
   `nombre_tipo` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -66,7 +66,7 @@ CREATE TABLE `gustos` (
 CREATE TABLE `opiniones` (
   `id_opinion` int NOT NULL,
   `id_platillo` int NOT NULL,
-  `id_usuario` int NOT NULL,
+  `id_usuario` varchar(20) NOT NULL,
   `comentario` text,
   `calificacion` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -83,7 +83,7 @@ CREATE TABLE `platillos_bebidas` (
   `nombre_subtipo` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `nombre` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `descripcion` text,
-  `imagen` longblob
+  `imagen` varchar(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -96,7 +96,7 @@ CREATE TABLE `restaurante` (
   `id_restaurante` int NOT NULL,
   `nombre` varchar(30) DEFAULT NULL,
   `nombre_tipo` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `imagen` longblob NOT NULL
+  `imagen` varchar(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -107,7 +107,7 @@ CREATE TABLE `restaurante` (
 
 CREATE TABLE `subtipo` (
   `nombre_subtipo` varchar(20) NOT NULL,
-  `imagen` longblob
+  `imagen` varchar(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -128,7 +128,7 @@ INSERT INTO `subtipo` (`nombre_subtipo`, `imagen`) VALUES
 
 CREATE TABLE `tipo` (
   `nombre_tipo` varchar(20) NOT NULL,
-  `imagen` longblob
+  `imagen` varchar(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -152,12 +152,13 @@ INSERT INTO `tipo` (`nombre_tipo`, `imagen`) VALUES
 --
 
 CREATE TABLE `usuario` (
-  `id_usuario` int NOT NULL,
+  `id_usuario` varchar(20) NOT NULL,
   `nombre` varchar(30) DEFAULT NULL,
   `apellidos` varchar(60) DEFAULT NULL,
+  `contrasena` varchar(35) NOT NULL,
   `fecha` date DEFAULT NULL,
   `email` varchar(40) DEFAULT NULL,
-  `telefono` int DEFAULT NULL,
+  `telefono` varchar(10) DEFAULT NULL,
   `calle` varchar(30) DEFAULT NULL,
   `colonia` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -170,7 +171,7 @@ CREATE TABLE `usuario` (
 -- Indices de la tabla `compras`
 --
 ALTER TABLE `compras`
-  ADD PRIMARY KEY (`id_compra`,`id_usuario`),
+  ADD PRIMARY KEY (`id_compra`) USING BTREE,
   ADD KEY `id_usuario` (`id_usuario`);
 
 --
@@ -257,12 +258,6 @@ ALTER TABLE `restaurante`
   MODIFY `id_restaurante` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  MODIFY `id_usuario` int NOT NULL AUTO_INCREMENT;
-
---
 -- Restricciones para tablas volcadas
 --
 
@@ -270,35 +265,35 @@ ALTER TABLE `usuario`
 -- Filtros para la tabla `compras`
 --
 ALTER TABLE `compras`
-  ADD CONSTRAINT `compras_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE;
+  ADD CONSTRAINT `compras_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `compras_platillos`
 --
 ALTER TABLE `compras_platillos`
-  ADD CONSTRAINT `compras_platillos_ibfk_1` FOREIGN KEY (`id_compra`) REFERENCES `compras` (`id_compra`) ON DELETE CASCADE,
-  ADD CONSTRAINT `compras_platillos_ibfk_2` FOREIGN KEY (`id_platillo`) REFERENCES `platillos_bebidas` (`id_platillo`) ON DELETE CASCADE;
+  ADD CONSTRAINT `compras_platillos_ibfk_1` FOREIGN KEY (`id_compra`) REFERENCES `compras` (`id_compra`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `compras_platillos_ibfk_2` FOREIGN KEY (`id_platillo`) REFERENCES `platillos_bebidas` (`id_platillo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `gustos`
 --
 ALTER TABLE `gustos`
-  ADD CONSTRAINT `gustos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE,
+  ADD CONSTRAINT `gustos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `gustos_ibfk_2` FOREIGN KEY (`nombre_tipo`) REFERENCES `tipo` (`nombre_tipo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `opiniones`
 --
 ALTER TABLE `opiniones`
-  ADD CONSTRAINT `opiniones_ibfk_1` FOREIGN KEY (`id_platillo`) REFERENCES `platillos_bebidas` (`id_platillo`) ON DELETE CASCADE,
-  ADD CONSTRAINT `opiniones_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE;
+  ADD CONSTRAINT `opiniones_ibfk_1` FOREIGN KEY (`id_platillo`) REFERENCES `platillos_bebidas` (`id_platillo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `opiniones_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `platillos_bebidas`
 --
 ALTER TABLE `platillos_bebidas`
-  ADD CONSTRAINT `platillos_bebidas_ibfk_2` FOREIGN KEY (`id_restaurante`) REFERENCES `restaurante` (`id_restaurante`) ON DELETE CASCADE,
-  ADD CONSTRAINT `platillos_bebidas_ibfk_3` FOREIGN KEY (`nombre_subtipo`) REFERENCES `subtipo` (`nombre_subtipo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `platillos_bebidas_ibfk_1` FOREIGN KEY (`id_restaurante`) REFERENCES `restaurante` (`id_restaurante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `platillos_bebidas_ibfk_2` FOREIGN KEY (`nombre_subtipo`) REFERENCES `subtipo` (`nombre_subtipo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `restaurante`
