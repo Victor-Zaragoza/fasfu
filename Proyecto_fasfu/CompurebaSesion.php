@@ -1,5 +1,4 @@
 <?php
-//Comprueba que exita una Sesion iniciada si no redirije al login
     include('MysqlConn.php');
     $conn= conectar();
     session_start();
@@ -31,8 +30,5 @@
             
         }
    }
-
-    //$compUsuario = $_SESSION['login_user'];
-   
-   
+    
  ?>
