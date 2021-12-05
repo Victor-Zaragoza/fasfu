@@ -1,0 +1,25 @@
+body{
+    font-family: sans-serif;
+}
+h1{
+    font-size: 22px;
+    margin-left: 10px;
+}
+.itemsH{
+    display: flex;
+    overflow-x: auto;
+    margin: 30px;
+}
+.itemsH::-webkit-scrollbar{
+    display: none;
+}
+.itemH{
+    min-width: 350px;
+    height: 300px;
+    align-items: flex-start;
+}
+.opcion{
+    width: 300px;
+    height: 250px;
+}
+

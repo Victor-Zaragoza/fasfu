@@ -1,0 +1,122 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+    
+}
+body{
+    font-family: Consolas, Microsoft New Tai Lue;
+    background-color: #D6D8D8;
+    padding: 90px 30px 0;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+
+/*ESTILOS PARA NAVEGADOR- HEADER*/
+.header{
+    background-color: #003374;
+    height: 60px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+.nav{
+    display: flex;
+    justify-content: space-between;
+}
+.menu-link{
+    color: #FFFFFF;
+    text-decoration: none;
+}
+.submenu{
+    font-size: 30px;
+    font-style: oblique;
+    font-weight: bolder;
+    padding:  0 40px;
+    line-height: 60px;
+}
+.menu-navegacion{
+    display: flex;
+    margin-right: 40px;
+}
+.menu-item{
+    font-size: 16px;
+    margin:  0 10px;
+    line-height: 60px;
+    widht: max-content;
+}
+.sel-link{
+    padding: 10px 14px;
+    border-radius: 3px;
+}
+.sel-link:hover{
+    background-color: #2D88DA;
+}
+/*ESTILOS PARA CONTENIDO DE LA PAGINA DIVS*/
+.base{
+    background-color: #FFFFFF;
+    padding: 0 8px 0;
+    border-radius: 5px;
+}
+.base2{
+    position: fixed;
+    bottom: 50px;
+    right: 40px;
+    left: 40px;
+    top: 200px;
+}
+.fondo-2{
+    background-color: #C3E3FF;
+    border:  1;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: #C3E3FF;
+}
+.fondo-3{
+    background-color: #FAE29A;
+    border:  1;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: #FAE29AF;
+}
+/*Estilos para títulos y contenidos*/
+.titulo1{
+    font-size: 40px;
+    font-weight: bold;
+}
+.titulo2{
+    font-size: 22px;
+    font-weight: bold;
+}
+.titulo{
+    font-size: 25px;
+    font-weight: bold;
+    color: #DE0059;
+}
+.contenido{
+    font-size: 18px;
+    text-align: justify;
+}
+/*Estilos de formularios*/
+.formulario{
+    width: 60%;
+    padding: 10px 0;
+    color: black;
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid black;
+    transition: border-color 0.2s;
+}
+/*Estilos de botones*/
+.btn{
+    border: 0;
+    background-color: #2D88DA;
+    font-weight: bold;
+    font-size: 20px;
+    color:white;
+    padding: 10px 20px;
+}
+.btn:hover{
+    background: #003374;
+}
