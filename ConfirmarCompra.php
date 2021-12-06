@@ -1,8 +1,7 @@
 <?php
-    include ("CompruebaSesion.php");
-    $date = date('Y-m-d H:i:s');
-     include ("encabezados.php");
-     menu();
+    session_start();
+    include ("encabezados.php");
+    menu();
 ?>
 
 <!DOCTYPE html>
@@ -14,11 +13,13 @@
     </head>
     <body>
      <div class="container-fluid">
-        <div class="col-md-12">
+        <div class="col-md-16">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-10">
                     <h2>Productos seleccionados</h2>
                         <?php
+                        
+                        //Mostrará una tabla con todo el contenido del carrito y opciones para elminiar y comprar. 
                             $total=0;  
                             $salida= "";
                             $salida .=" 
@@ -33,8 +34,8 @@
                                    </tr>
                                         ";
                                 
-                            if(!empty($_SESSION['usuario'])){
-                                foreach ($_SESSION['usuario'] as $key =>$value){
+                            if(!empty($_SESSION['carrito'])){
+                                foreach ($_SESSION['carrito'] as $key =>$value){
                                     $salida.= " 
                                         <tr>
                                             <td>".$value['id_platillo']. "</td>
@@ -43,32 +44,33 @@
                                             <td>".$value['cantidad']. "</td>
                                             <td>$". number_format($value['precio']* $value['cantidad'],2) . "</td>
                                             <td>   
-                                                <a href='ConfirmarCompra.php?action=removeC&id_platillo=".$value['id_platillo']."'>
-                                                <button class='btn btn-danger btn-block'>Eliminar</button>
-                                                </a> 
+                                               <a href='ConfirmarCompra.php?action=removeC&id_platillo=".$value['id_platillo']."'>
+                                               <button class='btn btn-danger btn-block'>Eliminar</button>
+                                               </a> 
                                             </td>
-                                                    ";
+                                        </tr>";
                                     $total+= $value['cantidad']*$value['precio'];
                                 }
                                 
                                 $salida .= " 
                                     <tr>
-                                        <td colspan='2'></td>
-                                        <td><b>Precio Total</b></td>
-                                        <td>". number_format($total,2)."</td>
+                                        <td colspan=2><b>Precio Total</b></td>
+                                        <td colspan=2>". number_format($total,2)."</td>
                                         <td>
                                             <a href='ConfirmarCompra.php?action=comprar'>
                                             <button class= 'btn btn-warning btn-block'>Realizar Compra</button>
                                         </td> 
                                         <td>
-                                            <a href='VerCarrito3.php?action=clearall'>
+                                            <a href='ConfirmarCompra.php?action=clearall'>
                                             <button class= 'btn btn-warning btn-block'>Eliminar todo</button>
                                         </td>    
                                     </tr>";
                             }
                                 
                             echo $salida;  
-                                  
+                                
+                            //Si se presiona el boton comprar nos enviara a la 
+                            //pagina para enviar el correo y finalizar la compra
                             if(isset($_GET['action'])){
                                 if($_GET['action']=='comprar'){
                                     echo "<script>
@@ -76,14 +78,16 @@
                                             window.location= 'EnviarCorreo.php'
                                            </script>";
                                 }
-                                     
-                                if($_GET['action']=='clearall')        
-                                    unset ($_SESSION['usuario']); 
-                                        
+                                  
+                                //Si se presiona el boton Eliminar todo borra todos los datos del carrito   
+                                if($_GET['action']=='clearall')       
+                                    unset ($_SESSION['carrito']);
+                                
+                                //Solo eliminara el producto que se haya seleccionado
                                 if ($_GET['action']=='removeC'){        
-                                    foreach ($_SESSION['usuario'] as $key =>$value){        
+                                    foreach ($_SESSION['carrito'] as $key =>$value){        
                                         if($value['id_platillo']==$_GET['id_platillo'])        
-                                            unset($_SESSION['usuario'][$key]);
+                                            unset($_SESSION['carrito'][$key]);
                                     }    
                                 }
                             }
@@ -92,7 +96,6 @@
                 </div>
             </div>
         </div> 
-    
 </body>
 </html>
     

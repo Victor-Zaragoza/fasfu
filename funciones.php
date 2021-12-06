@@ -1,6 +1,4 @@
 <?php
-
-    //include ("CompruebaSesion.php");
     
 //Función para crear categorias
 function categorias($titulo, $tabla, $sql) {
@@ -80,6 +78,7 @@ function tituloFiltro() {
 //Función para desplegar los platillos de la consulta
 function catalogo($result){
     if ($result->num_rows > 0) {
+        
         echo '<div class="main">';
         while ($row = $result->fetch_assoc()){
             echo '<div class="cards">'
@@ -91,22 +90,22 @@ function catalogo($result){
             . '<h1>'.$row['nombre'].'</h1>'
             . '</div>'
             . '<div class="descripcion">'
-            . '<h2>'.$row['precio'].'</h2>'
+            . '<h2>$'.$row['precio'].'</h2>'
             . '</div>'
             . ' <form method="POST" action="AgregarCarrito.php?id_platillo='.$row['id_platillo'].'">'
-                    . '<input type="hidden" name="nombre" value='.$row['nombre'].'">'
-                    . '<input type="hidden" name="precio" value='.$row['precio'].'">'
-                    . '<input type="number" name="cantidad" value="1" class="from-control">'
+                    . '<input type="hidden" name="nombre" value='.$row['nombre'].'>'
+                    . '<input type="hidden" name="precio" value='.$row['precio'].'>'
+                    . '<input type="number" min="1" max="20" name="cantidad" value="1" class="from-control">'
                     . '<input type="submit" name="AgregaCarrito" class=" btn btn-warning btn-block my-2" value="Añade al carrito"> </form>'
-            . '</div>';
+            . '</div>'; //Cuando se quiera Agregar un dato al carrito enviará el form a AgregarCarrito.php
             
         }
         echo "</div>";
     }else{
         echo "No existen resultados para esta búsqueda.";
     }
-    
 }
+
 //Función general de las consultas de platillos por categorías
 function seleccionarFiltro() {
 
