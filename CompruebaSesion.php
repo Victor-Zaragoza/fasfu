@@ -1,7 +1,8 @@
 <?php
+    session_start();
     include('mysql/MysqlConn.php');
     $conn= conectar();
-    session_start();
+    
     
     if(isset($_POST['AgregaCarrito'])){
         if (isset($_SESSION['usuario'])){

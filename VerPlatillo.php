@@ -88,7 +88,14 @@
                         </P>
                 </DIV>
             </DIV>
-            <button id="mostrarComentar" onclick="mostrarCajaComentar()">Opinar</button>
+            
+            <?php
+                if(isset($_SESSION['usuario'])){
+            ?>
+                    <button id="mostrarComentar" onclick="mostrarCajaComentar()">Opinar</button>
+             <?php
+                }
+             ?>
             <DIV  id="comentar" style="position: relative;text-align: center;color: white;display: none;background-color: grey">
                 <form method="post" action="PublicarOpinion.php">
                 <input type="hidden" name="idPlatillo" value="<?php echo $idPlatillo;?>">    

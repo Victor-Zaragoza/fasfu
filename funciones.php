@@ -1,5 +1,7 @@
 <?php
 
+    //include ("CompruebaSesion.php");
+    
 //Función para crear categorias
 function categorias($titulo, $tabla, $sql) {
     //Obtener registros
@@ -91,7 +93,11 @@ function catalogo($result){
             . '<div class="descripcion">'
             . '<h2>'.$row['precio'].'</h2>'
             . '</div>'
-            . '<button>Comprar</button>'
+            . ' <form method="POST" action="AgregarCarrito.php?id_platillo='.$row['id_platillo'].'">'
+                    . '<input type="hidden" name="nombre" value='.$row['nombre'].'">'
+                    . '<input type="hidden" name="precio" value='.$row['precio'].'">'
+                    . '<input type="number" name="cantidad" value="1" class="from-control">'
+                    . '<input type="submit" name="AgregaCarrito" class=" btn btn-warning btn-block my-2" value="Añade al carrito"> </form>'
             . '</div>';
             
         }
@@ -99,6 +105,7 @@ function catalogo($result){
     }else{
         echo "No existen resultados para esta búsqueda.";
     }
+    
 }
 //Función general de las consultas de platillos por categorías
 function seleccionarFiltro() {
@@ -132,6 +139,7 @@ function seleccionarFiltro() {
     
     //Mostrar en página los platillos
     catalogo($result);
+    mysqli_close($GLOBALS['conexion']);
 }
 ?>
 

@@ -1,6 +1,7 @@
 <?php
 //Comprobamos sesión abierta
 session_start();
+    
 if (!isset($_POST['busqueda'])) {
     header('index.php');
 }
@@ -81,6 +82,7 @@ if (!isset($_POST['busqueda'])) {
     <body>
         <?php
         //Agregamos el menú o encabezado.
+        //include ("CompruebaSesion.php");
         include ("encabezados.php");
         menu();
 
